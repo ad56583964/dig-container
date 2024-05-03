@@ -1,0 +1,11 @@
+docker-compose ?
+
+
+ssh -f -N -L 2323:192.168.238.128:3000 thinkbook@192.168.238.128
+
+
+export http_proxy=http://192.168.195.1:7890
+export https_proxy=http://192.168.195.1:7890
+export ftp_proxy=http://192.168.195.1:7890
+export ALL_PROXY=socks5://192.168.195.1:7889
+export all_proxy=socks5://192.168.195.1:7889

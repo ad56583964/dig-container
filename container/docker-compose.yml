@@ -1,0 +1,13 @@
+services:
+  env:
+    build:
+      context: "."
+      # target: "boxenv"
+      args:
+        - "UID=${UID:-1000}"
+        - "GID=${GID:-1000}"
+    volumes:
+      - ./workdir:/home/user/workdir
+    command: /bin/bash
+    stdin_open: true
+    tty: true
