@@ -13,6 +13,7 @@ RUN usermod -aG sudo user
 RUN echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 RUN apt install ninja-build -y
+RUN apt install python3 -y
 
 USER user
 
