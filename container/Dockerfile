@@ -1,25 +1,21 @@
-FROM ubuntu:22.04
+FROM archlinux:base
 
 ARG UID=1000
 ARG GID=1000
 
-RUN apt update -y
-RUN apt install sudo -y
-
 RUN groupadd -g "${GID}" user \
   && useradd --create-home --no-log-init -u "${UID}" -g "${GID}" user
 
-RUN usermod -aG sudo user
-RUN echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN sed -i '1iServer = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' /etc/pacman.d/mirrorlist
 
-RUN apt install ninja-build -y
-RUN apt install python3 -y
+## other
 
-USER user
+RUN pacman -Sy
 
-COPY ./run.sh /opt/run.sh
+RUN pacman -S --noconfirm wget git
 
-RUN bash /opt/run.sh
+RUN pacman -Sy less
+# RUN wget https://github.com/CyberShadow/aconfmgr.git
 
 WORKDIR /home/user/workdir
 # Everything after this point will run as the python user with a specific UID / GID
