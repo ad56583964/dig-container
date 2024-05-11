@@ -31,6 +31,12 @@ RUN apt install -y bison
 RUN echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 # RUN wget https://github.com/CyberShadow/aconfmgr.git
 
-WORKDIR /home/user/workdir
 USER user
-# Everything after this point will run as the python user with a specific UID / GID
+WORKDIR /home/user/
+RUN mkdir -p /home/user/workdir/output
+
+RUN git clone https://github.com/qemu/qemu.git
+WORKDIR /home/user/qemu
+RUN ./configure --target-list=aarch64-softmmu
+RUN make -j
+RUN sudo make install

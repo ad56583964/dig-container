@@ -7,7 +7,7 @@ services:
         - "UID=${UID:-1000}"
         - "GID=${GID:-1000}"
     volumes:
-      - ./workdir:/home/user/workdir
+      - ./output:/home/user/workdir/output
     command: /bin/bash
     stdin_open: true
     tty: true
