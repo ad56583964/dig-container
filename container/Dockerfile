@@ -33,10 +33,39 @@ RUN echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 USER user
 WORKDIR /home/user/
-RUN mkdir -p /home/user/workdir/output
 
+ENV http_proxy=http://192.168.137.1:7890
+ENV https_proxy=http://192.168.137.1:7890
+ENV ftp_proxy=http://192.168.137.1:7890
+ENV ALL_PROXY=socks5://192.168.137.1:7889
+ENV all_proxy=socks5://192.168.137.1:7889
+
+RUN mkdir -p /home/user/workdir
+WORKDIR /home/user/workdir
 RUN git clone https://github.com/qemu/qemu.git
-WORKDIR /home/user/qemu
+WORKDIR /home/user/workdir/qemu
 RUN ./configure --target-list=aarch64-softmmu
 RUN make -j
 RUN sudo make install
+
+RUN sudo apt install -y strace
+
+WORKDIR /home/user/workdir
+RUN git clone https://github.com/gcc-mirror/gcc.git
+WORKDIR /home/user/workdir/gcc
+RUN git checkout releases/gcc-12.3.0
+RUN ./contrib/download_prerequisites
+
+WORKDIR /home/user/workdir
+RUN mkdir objdir
+# WORKDIR /home/user/workdir/objdir
+# use diable-multilib for only build 64bit lib
+# RUN ./../gcc/configure --prefix=$HOME/GCC-12.3.0  --disable-multilib --enable-languages=c,c++,fortran,go
+# RUN make -j
+# RUN make install
+
+WORKDIR /home/user/
+RUN cp -v -r workdir container-temp && rm -rf workdir
+   
+COPY entrypoint.sh .
+ENTRYPOINT [ "bash","entrypoint.sh" ]
