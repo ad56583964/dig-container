@@ -55,8 +55,12 @@ RUN sudo make install
 RUN sudo apt install -y rsync 
 # all changes in workdir move to container-temp
 # to prepare expose them to the host next
+
 WORKDIR /home/user/
-RUN rsync -av workdir container-temp && rm -rf workdir
+RUN mkdir -p container-temp
+RUN rsync -av workdir/* container-temp && rm -rf workdir/*
 
 COPY entrypoint.sh .
+RUN sudo chown user:user entrypoint.sh
+
 ENTRYPOINT [ "bash","entrypoint.sh" ]

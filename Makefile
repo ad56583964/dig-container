@@ -6,6 +6,7 @@ build:
 attach: up shell stop
 
 up:
+	mkdir -p workdir
 	docker-compose up -d
 
 shell:
