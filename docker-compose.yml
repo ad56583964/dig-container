@@ -1,5 +1,5 @@
 services:
-  env:
+  dig-container:
     build:
       context: "."
       # target: "boxenv"
