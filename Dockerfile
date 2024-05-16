@@ -46,7 +46,7 @@ ENV all_proxy=socks5://192.168.137.1:7889
 
 RUN mkdir -p /home/user/workdir
 WORKDIR /home/user/workdir
-RUN git clone https://github.com/qemu/qemu.git
+RUN git clone -v https://github.com/qemu/qemu.git
 WORKDIR /home/user/workdir/qemu
 RUN ./configure --target-list=aarch64-softmmu
 RUN make -j
