@@ -1,5 +1,5 @@
 #!/bin/bash
-mv /home/user/container-temp/* /home/user/workdir/
+rsync -av /home/user/container-temp/* /home/user/workdir/
 
 echo "entrypoint.sh finish"
 

@@ -52,10 +52,11 @@ RUN ./configure --target-list=aarch64-softmmu
 RUN make -j
 RUN sudo make install
 
+RUN sudo apt install -y rsync 
 # all changes in workdir move to container-temp
 # to prepare expose them to the host next
 WORKDIR /home/user/
-RUN cp -v -r workdir container-temp && rm -rf workdir
-   
+RUN rsync -av workdir container-temp && rm -rf workdir
+
 COPY entrypoint.sh .
 ENTRYPOINT [ "bash","entrypoint.sh" ]
