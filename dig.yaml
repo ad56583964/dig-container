@@ -1,2 +1,4 @@
 # qemu
 # want to know early boot in arm64 linux
+
+qemu-system-aarch64

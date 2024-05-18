@@ -7,6 +7,7 @@ attach: up shell stop
 
 up:
 	mkdir -p workdir
+	mkdir -p archive
 	docker-compose up -d
 
 shell:

@@ -44,21 +44,30 @@ ENV ftp_proxy=http://192.168.137.1:7890
 ENV ALL_PROXY=socks5://192.168.137.1:7889
 ENV all_proxy=socks5://192.168.137.1:7889
 
-RUN mkdir -p /home/user/workdir
-WORKDIR /home/user/workdir
-RUN git clone -v https://github.com/qemu/qemu.git
-WORKDIR /home/user/workdir/qemu
+RUN mkdir -p /home/user/archive
+WORKDIR /home/user/archive
+RUN git clone -v https://github.com/qemu/qemu.git -b stable-8.2
+WORKDIR /home/user/archive/qemu
 RUN ./configure --target-list=aarch64-softmmu
 RUN make -j
 RUN sudo make install
 
 RUN sudo apt install -y rsync 
-# all changes in workdir move to container-temp
+
+################
+# append start
+sudo apt install binutils-aarch64-linux-gnu-dbg
+
+
+# append end
+################
+
+# all changes in archive move to container-temp
 # to prepare expose them to the host next
 
 WORKDIR /home/user/
 RUN mkdir -p container-temp
-RUN rsync -av workdir/* container-temp && rm -rf workdir/*
+RUN rsync -av archive/* container-temp && rm -rf archive/*
 
 COPY entrypoint.sh .
 RUN sudo chown user:user entrypoint.sh
