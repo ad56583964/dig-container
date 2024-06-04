@@ -3,7 +3,7 @@ all: build
 build:
 	time docker-compose build;
 
-attach: up shell stop
+attach: up shell
 
 up:
 	mkdir -p workdir
